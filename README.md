@@ -1,2 +1,2 @@
 # webcodecs
-https://guest271314.github.io/webcodecs/index.html
+https://guest271314.github.io/webcodecs/
