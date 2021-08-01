@@ -1,32 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
   <head>
-    <meta charset="utf-8" />
-    <title>
-      WebCodecs Audio Encode and Decode Music - to Media Transform API
-      MediaStreamTrackGenerator
-    </title>
-    <style>
-      button {
-        background-color: #555555;
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        width: 150px;
-        text-align: center;
-        display: block;
-        font-size: 16px;
-      }
-      button:disabled {
-        background-color: #358738;
-      }
-    </style>
+    <title>Encode and decode music with AudioEncoder, AudioDecoder, MediaStreamTrackGenerator, serialize to JSON, deserialize JSON to EncodedAudioChunk, decode</title>
   </head>
 
   <body>
-    <audio autoplay controls></audio>
-    <button onclick="main()">Play</button>
-    <div id="total"></div>
-    <script src="./audioencoder-audiodecoder-mediastreamtrackgenerator.js"></script>
+    <iframe src="./audioencoder-audiodecoder-mediastreamtrackgenerator.html"></iframe>
+    <iframe src="./serialize-to-json-deserialize-json-to-encodedaudiochunk-decode.html"></iframe>
+    <iframe src="./deserialize-json-to-encodedaudiochunk-decode.html"></iframe>
   </body>
 </html>
