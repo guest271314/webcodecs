@@ -3,9 +3,16 @@ async function main() {
     sampleRate: 22050,
     latencyHint: 0,
   });
-  const osc = new OscillatorNode(ac, { frequency: 0, channelCount: 1 });
+  const osc = new OscillatorNode(ac, { 
+    frequency: 0, channelCount: 1,
+    channelCount: 1, 
+    channelCountMode: 'explicit', 
+    channelInterpretation: 'discrete'
+  });
   const msd = new MediaStreamAudioDestinationNode(ac, {
-    channelCount: 1,
+    channelCount: 1, 
+    channelCountMode: 'explicit', 
+    channelInterpretation: 'discrete'
   });
   const { stream } = msd;
   const [track] = stream.getAudioTracks();
