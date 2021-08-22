@@ -140,6 +140,7 @@ async function main() {
       });
       const ab = (await ac.decodeAudioData(wav)).getChannelData(0);
       let i = 0;
+      // resample to 22050
       for (; i < ab.length; i++) {
         if (channelData.length === TARGET_FRAME_SIZE) {
           const floats = new Float32Array(
@@ -162,16 +163,14 @@ async function main() {
       }
     },
   });
-
   let raw_music_wav = await fetch('./ImperialMarch60.webm');
   if (!music_buffer) {
     music_buffer = await ac.decodeAudioData(await raw_music_wav.arrayBuffer());
   }
   let floats = music_buffer.getChannelData(0);
   console.log(~~((~~(floats.length / 220) / ~~music_buffer.duration) * 10));
-
   for (let i = 0; i < floats.length; i += 220) {
-    // Avoid filling with 0's which impacts duration accuracy
+    // avoid filling with 0's which impacts duration accuracy
     const len = i + 220 > floats.length ? floats.length - i : 0;
     const data = new Float32Array(len || 220);
     data.set(floats.subarray(i, i + (len || 220)));
