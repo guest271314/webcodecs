@@ -8,7 +8,6 @@ class WavAudioEncoder {
       numberOfSamples: 0,
       dataViews: [],
     });
-    return this.encode();
   }
   setString(view, offset, str) {
     const len = str.length;
@@ -133,12 +132,12 @@ async function main() {
       const size = frame.allocationSize({ planeIndex: 0 });
       const data = new ArrayBuffer(size);
       frame.copyTo(data, { planeIndex: 0 });
-      const wav = await new WavAudioEncoder({
+      const wav = new WavAudioEncoder({
         sampleRate: 48000,
         numberOfChannels: 1,
         buffers: [new Float32Array(data)],
       });
-      const ab = (await ac.decodeAudioData(wav)).getChannelData(0);
+      const ab = (await ac.decodeAudioData(await wav.encode())).getChannelData(0);
       let i = 0;
       // resample to 22050
       for (; i < ab.length; i++) {
