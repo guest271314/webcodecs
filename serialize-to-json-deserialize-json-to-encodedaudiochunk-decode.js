@@ -120,7 +120,7 @@ async function main() {
     numberOfChannels: 1,
     sampleRate: 22050, // Chrome hardcodes to 48000
     codec: 'opus',
-    bitrate: 16000,
+    bitrate: 128000,
   };
   encoder.configure(config);
   const decoder = new AudioDecoder({
