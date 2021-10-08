@@ -52,13 +52,14 @@ async function main() {
       duration,
       data,
     });
+
     decoder.decode(eac);
-    const { value: duration, done } = await decoderReader.read();
+    const { value, done } = await decoderReader.read();
     // Avoid overflowing MediaStreamTrackGenerator
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1184070
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=1199377 
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=1199377
     await new Promise((resolve) =>
-      setTimeout(resolve, ((duration || 0) / 10 ** 6) * 900)
+      setTimeout(resolve, ((value || 0) / 10 ** 6) * 900)
     );
   }
   // Avoid clipping end of playback
