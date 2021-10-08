@@ -42,6 +42,7 @@ async function main() {
   console.log(await AudioEncoder.isConfigSupported(metadata.decoderConfig));
   decoder.configure(metadata.decoderConfig);
   encoded_audio_chunk_length = encoded.length;
+  let base_time = encoded[encoded.length - 1].find((_, i, t) => i === t);
   while (encoded.length) {
     const chunk = encoded.shift();
     let [/* type, */ timestamp, /* byteLength, */ duration, data] = chunk;
@@ -52,7 +53,6 @@ async function main() {
       duration,
       data,
     });
-
     decoder.decode(eac);
     const { value, done } = await decoderReader.read();
     // Avoid overflowing MediaStreamTrackGenerator
