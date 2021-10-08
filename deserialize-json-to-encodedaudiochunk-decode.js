@@ -35,20 +35,23 @@ async function main() {
   });
   await audioWriter.ready;
   const encoded = await (await fetch('./encoded.json')).json();
-  let base_time = encoded[encoded.length - 1].timestamp;
-  console.assert(encoded.length > 0, encoded.length);
-  console.log(JSON.stringify(encoded, null, 2));
   const metadata = encoded.shift();
-  console.log(encoded[encoded.length - 1].timestamp, base_time);
   metadata.decoderConfig.description = new Uint8Array(
     base64ToBytesArr(metadata.decoderConfig.description)
   ).buffer;
   console.log(await AudioEncoder.isConfigSupported(metadata.decoderConfig));
   decoder.configure(metadata.decoderConfig);
+  encoded_audio_chunk_length = encoded.length;
   while (encoded.length) {
     const chunk = encoded.shift();
-    chunk.data = new Uint8Array(base64ToBytesArr(chunk.data)).buffer;
-    const eac = new EncodedAudioChunk(chunk);
+    let [/* type, */ timestamp, /* byteLength, */ duration, data] = chunk;
+    data = new Uint8Array(base64ToBytesArr(data)).buffer;
+    const eac = new EncodedAudioChunk({
+      type: 'key',
+      timestamp,
+      duration,
+      data,
+    });
     decoder.decode(eac);
     const { value: duration, done } = await decoderReader.read();
     // Avoid overflowing MediaStreamTrackGenerator
