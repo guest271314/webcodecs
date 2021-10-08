@@ -35,6 +35,7 @@ async function main() {
   });
   await audioWriter.ready;
   const encoded = await (await fetch('./encoded.json')).json();
+  let base_time = encoded[encoded.length - 1].find((_, i, t) => i === t.length - 1);
   const metadata = encoded.shift();
   metadata.decoderConfig.description = new Uint8Array(
     base64ToBytesArr(metadata.decoderConfig.description)
@@ -42,7 +43,6 @@ async function main() {
   console.log(await AudioEncoder.isConfigSupported(metadata.decoderConfig));
   decoder.configure(metadata.decoderConfig);
   encoded_audio_chunk_length = encoded.length;
-  let base_time = encoded[encoded.length - 1].find((_, i, t) => i === t);
   while (encoded.length) {
     const chunk = encoded.shift();
     let [/* type, */ timestamp, /* byteLength, */ duration, data] = chunk;
