@@ -29,7 +29,7 @@ async function main() {
     numberOfChannels: 1,
     sampleRate: 22050,
     codec: 'opus',
-    bitrate: 16000,
+    bitrate: 22000,
   };
   const encoder = new AudioEncoder({
     error(e) {
