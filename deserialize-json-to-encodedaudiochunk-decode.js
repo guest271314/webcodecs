@@ -35,7 +35,7 @@ async function main() {
   });
   await audioWriter.ready;
   const encoded = await (await fetch('./encoded.json')).json();
-  let base_time = encoded[encoded.length - 1].find((_, i, t) => i === t.length - 1);
+  let [base_time] = encoded[encoded.length - 1];
   const metadata = encoded.shift();
   metadata.decoderConfig.description = new Uint8Array(
     base64ToBytesArr(metadata.decoderConfig.description)
