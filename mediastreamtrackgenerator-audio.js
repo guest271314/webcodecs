@@ -76,16 +76,15 @@ document.querySelector('#MediaStreamTrackGenerator').onclick = async () => {
   // we can stream here without compiling
   // to single TypedArray by
   // filling Float32Array's with numberOfFrames from AudioData's
-  const floats = new Float32Array(
-    audioDatas.reduce((array, audioData) => {
-      const ab = new ArrayBuffer(
-        audioData.allocationSize({ planeIndex: 0, format: 'f32' })
-      );
-      const f32 = new Float32Array(ab);
-      audioData.copyTo(ab, { planeIndex: 0, format: 'f32' });
-      return [...array, ...f32];
-    }, [])
-  );
+  let blob = new Blob();
+  for (const audioData of audioDatas) {
+    const ab = new ArrayBuffer(
+      audioData.allocationSize({ planeIndex: 0, format: 'f32' })
+    );
+    audioData.copyTo(ab, { planeIndex: 0, format: 'f32' });
+    blob = new Blob([blob, ab]);
+  }
+  const floats = new Float32Array(await blob.arrayBuffer());
   // Create 1 second WAV file of silence
   // at same sample rate as 'opus' AudioDecoder AudioData output
   // stream silence in a loop
